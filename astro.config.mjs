@@ -5,11 +5,15 @@ import tailwindcss from '@tailwindcss/vite';
 
 import mdx from '@astrojs/mdx';
 
+import netlify from '@astrojs/netlify';
+
 // https://astro.build/config
 export default defineConfig({
   vite: {
     plugins: [tailwindcss()]
   },
 
-  integrations: [mdx()]
+  integrations: [mdx()],
+  output: "server",
+  adapter: netlify()
 });
