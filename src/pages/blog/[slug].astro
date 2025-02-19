@@ -1,0 +1,31 @@
+---
+import {Image} from "astro:assets"
+import {CollectionEntry, getCollection} from "astro:content";
+import H1 from "../../components/H1.astro";
+import Main from "../../components/Main.astro";
+import Layout from "../../layouts/Layout.astro";
+export async function getStaticPaths() {
+    const posts = await getCollection('posts')
+    return posts.map(post => ({params: {slug: post.slug}, props: {post}}))
+}
+
+interface Props {
+    post: CollectionEntry<'posts'>
+}
+
+const {slug} = Astro.params;
+const {post} = Astro.props
+const {Content} = await post.render()
+
+---
+<Layout title={slug}>
+    <Main>
+        <H1 text={post.data.title}/>
+        <Image src={post.data.image} alt={post.data.title} width={600}
+               height={600 / 1.5}/>
+        <div class="prose prose-xl mt-10">
+            <Content/>
+        </div>
+
+    </Main>
+</Layout>
